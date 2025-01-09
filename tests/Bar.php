@@ -7,6 +7,7 @@ namespace {
 /**
  * Bar message
  */
+#[\AllowDynamicProperties]
 class Bar extends \ProtobufMessage
 {
     /* Field index constants */

@@ -7,6 +7,7 @@ namespace {
 /**
  * Foo message
  */
+#[\AllowDynamicProperties]
 class Foo extends \ProtobufMessage
 {
     /* Field index constants */

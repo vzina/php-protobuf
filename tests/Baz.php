@@ -7,6 +7,7 @@ namespace {
 /**
  * Baz message
  */
+#[\AllowDynamicProperties]
 class Baz extends \ProtobufMessage
 {
     /* Field index constants */
