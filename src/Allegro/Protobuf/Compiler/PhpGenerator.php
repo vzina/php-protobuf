@@ -345,6 +345,7 @@ class PhpGenerator
         $buffer->append($comment);
 
         $className = $this->_createClassName($descriptor);
+
         $buffer->append('class ' . $className . ' extends \ProtobufMessage')
             ->append('{')
             ->increaseIdentation();
@@ -798,6 +799,10 @@ class PhpGenerator
      */
     private function _createClassConstructor(array $fields, CodeStringBuffer $buffer)
     {
+        $buffer->append('/* @var array Values descriptors */')
+            ->append('protected $values = array();')
+            ->newline();
+
         $buffer->append('/* Field index constants */');
 
         foreach ($fields as $field) {
