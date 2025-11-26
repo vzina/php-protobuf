@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "protobuf.h"
+#include "protobuf2.h"
 #include "reader.h"
 
 #define READER_LEFT(reader) (reader)->len - (reader)->pos
