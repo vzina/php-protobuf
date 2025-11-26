@@ -815,7 +815,7 @@ class Foo extends \ProtobufMessage
      *
      * @return null
      */
-    public function setEmbeddedField(\Bar $value=null)
+    public function setEmbeddedField(?\Bar $value=null)
     {
         return $this->set(self::EMBEDDED_FIELD, $value);
     }
@@ -1365,7 +1365,7 @@ class Foo extends \ProtobufMessage
      *
      * @return null
      */
-    public function setOptionalEmbeddedField(\Baz $value=null)
+    public function setOptionalEmbeddedField(?\Baz $value=null)
     {
         return $this->set(self::OPTIONAL_EMBEDDED_FIELD, $value);
     }
