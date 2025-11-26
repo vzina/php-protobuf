@@ -266,14 +266,14 @@ PHP_METHOD(ProtobufMessage, dump)
 
 		if (Z_TYPE_P(value) == IS_ARRAY) {
 			if (zend_hash_num_elements(Z_ARRVAL_P(value)) > 0 || !only_set) {
-				php_printf("%*c%lu: %s(%u) => \n", ((int) level + 1) * 2, ' ', (uint64_t)field_number, field_name, zend_hash_num_elements(Z_ARRVAL_P(value)));
+				php_printf("%*c%llu: %s(%u) => \n", ((int) level + 1) * 2, ' ', (uint64_t)field_number, field_name, zend_hash_num_elements(Z_ARRVAL_P(value)));
 
 				if (zend_hash_num_elements(Z_ARRVAL_P(value)) > 0) {
 					PB_FOREACH(&j, Z_ARRVAL_P(value)) {
 						zend_hash_get_current_key_ex(Z_ARRVAL_P(value), NULL, &index, &j);
 						val = zend_hash_get_current_data_ex(Z_ARRVAL_P(value), &j);
 
-						php_printf("%*c[%lu] =>", ((int) level + 2) * 2, ' ', (uint64_t)index);
+						php_printf("%*c[%llu] =>", ((int) level + 2) * 2, ' ', (uint64_t)index);
 
 						if (pb_dump_field_value(val, level + 3, only_set) != 0)
 							goto fail0;
@@ -282,7 +282,7 @@ PHP_METHOD(ProtobufMessage, dump)
 					php_printf("%*cempty\n", ((int) level + 2) * 2, ' ');
 			}
 		} else if (Z_TYPE_P(value) != IS_NULL || !only_set) {
-			php_printf("%*c%lu: %s =>", 2 * ((int) level + 1), ' ', (uint64_t)field_number, field_name);
+			php_printf("%*c%llu: %s =>", 2 * ((int) level + 1), ' ', (uint64_t)field_number, field_name);
 
 			if (pb_dump_field_value(value, level + 1, only_set) != 0)
 				goto fail0;
@@ -411,12 +411,12 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 					break;
 
 				default:
-					PB_PARSE_ERROR("unexpected wire type %ld for unexpected %lu field", wire_type, (uint64_t)field_number);
+					PB_PARSE_ERROR("unexpected wire type %u for unexpected %llu field", wire_type, (uint64_t)field_number);
 					goto fail0;
 			}
 
 			if (ret != 0) {
-				PB_PARSE_ERROR("parse unexpected %lu field of wire type %s fail", (uint64_t)field_number, pb_get_wire_type_name(wire_type));
+				PB_PARSE_ERROR("parse unexpected %llu field of wire type %s fail", (uint64_t)field_number, pb_get_wire_type_name(wire_type));
 				goto fail0;
 			}
 
@@ -787,7 +787,7 @@ static int pb_assign_value(zval *this, zval *dst, zval *src, zend_ulong field_nu
 				break;
 
 			default:
-				PB_COMPILE_ERROR_EX(this, "unexpected '%s' field type %d in field descriptor", pb_get_field_name(this, field_number), zend_get_type_by_const(Z_LVAL_P(type)));
+				PB_COMPILE_ERROR_EX(this, "unexpected '%s' field type %s in field descriptor", pb_get_field_name(this, field_number), zend_get_type_by_const(Z_LVAL_P(type)));
 				goto fail2;
 		}
 
@@ -907,7 +907,7 @@ static zval *pb_get_field_descriptor(zval *this, zval *field_descriptors, zend_u
 
     field_descriptor = zend_hash_index_find(Z_ARRVAL_P(field_descriptors), field_number);
     if (field_descriptor == NULL)
-		PB_COMPILE_ERROR_EX(this, "missing %lu field descriptor", (uint64_t)field_number);
+        PB_COMPILE_ERROR_EX(this, "missing %llu field descriptor", (uint64_t)field_number);
 
 	return field_descriptor;
 }
@@ -952,7 +952,7 @@ static const char *pb_get_field_name(zval *this, zend_ulong field_number)
 
 	field_name = zend_hash_str_find(Z_ARRVAL_P(field_descriptor), PB_FIELD_NAME, sizeof(PB_FIELD_NAME) - 1);
 	if (field_name == NULL) {
-		PB_COMPILE_ERROR_EX(this, "missing %lu field name property in field descriptor", (uint64_t)field_number);
+		PB_COMPILE_ERROR_EX(this, "missing %llu field name property in field descriptor", (uint64_t)field_number);
 		goto fail0;
 	}
 
@@ -1035,7 +1035,7 @@ static zval *pb_get_value(zval *this, zval *values, zend_ulong field_number)
 
     value = zend_hash_index_find(Z_ARRVAL_P(values), field_number);
     if (value == NULL)
-		PB_COMPILE_ERROR_EX(this, "missing %lu field value", (uint64_t)field_number);
+		PB_COMPILE_ERROR_EX(this, "missing %llu field value", (uint64_t)field_number);
 
     return value;
 }
@@ -1100,7 +1100,7 @@ static int pb_parse_field_value(zval *this, reader_t *reader, zend_ulong field_n
 			break;
 
 		default:
-			PB_COMPILE_ERROR_EX(this, "unexpected '%s' field type %d in field descriptor", pb_get_field_name(this, field_number), field_type);
+			PB_COMPILE_ERROR_EX(this, "unexpected '%s' field type %lld in field descriptor", pb_get_field_name(this, field_number), field_type);
 			return -1;
 	}
 
@@ -1179,7 +1179,7 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, zend_ulong fie
 				break;
 
 			default:
-				PB_COMPILE_ERROR_EX(this, "unexpected '%s' field type %d in field descriptor", pb_get_field_name(this, field_number), Z_LVAL_P(type));
+				PB_COMPILE_ERROR_EX(this, "unexpected '%s' field type %lld in field descriptor", pb_get_field_name(this, field_number), Z_LVAL_P(type));
 				return -1;
 		}
 
@@ -1229,7 +1229,7 @@ static int pb_serialize_packed_field(zval *this, writer_t *writer, zend_ulong fi
 			break;
 
 		default:
-			PB_COMPILE_ERROR_EX(this, "unexpected '%s' type %d for packed field in field descriptor", pb_get_field_name(this, field_number), field_type);
+			PB_COMPILE_ERROR_EX(this, "unexpected '%s' type %lld for packed field in field descriptor", pb_get_field_name(this, field_number), field_type);
 			return -1;
 	}
 
