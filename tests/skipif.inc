@@ -1,5 +1,5 @@
 <?php
-if (!extension_loaded('iprotobuf')) {
+if (!extension_loaded('protobuf')) {
 	die("skip protobuf extension not available");
 }
 ?>

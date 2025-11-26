@@ -2,7 +2,7 @@
 
 #include <php.h>
 
-#include "iprotobuf.h"
+#include "protobuf.h"
 #include "writer.h"
 
 #define WRITER_DATA_SIZE_INCREMENT 1024

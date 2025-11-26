@@ -2,8 +2,8 @@
 #include <ext/standard/php_string.h>
 #include <Zend/zend_exceptions.h>
 
-#include "php_iprotobuf.h"
-#include "iprotobuf.h"
+#include "php_protobuf.h"
+#include "protobuf.h"
 #include "reader.h"
 #include "writer.h"
 
@@ -695,7 +695,7 @@ static zend_function_entry pb_methods[] = {
 	{NULL, NULL, NULL, 0, 0}
 };
 
-PHP_MINIT_FUNCTION(iprotobuf)
+PHP_MINIT_FUNCTION(protobuf)
 {
 	zend_class_entry ce;
 
@@ -714,11 +714,11 @@ PHP_MINIT_FUNCTION(iprotobuf)
 	return SUCCESS;
 }
 
-zend_module_entry iprotobuf_module_entry = {
+zend_module_entry protobuf_module_entry = {
 	STANDARD_MODULE_HEADER,
 	PHP_PROTOBUF_EXTNAME,
 	NULL,
-	PHP_MINIT(iprotobuf),
+	PHP_MINIT(protobuf),
 	NULL,
 	NULL,
 	NULL,
@@ -727,8 +727,8 @@ zend_module_entry iprotobuf_module_entry = {
 	STANDARD_MODULE_PROPERTIES
 };
 
-#ifdef COMPILE_DL_IPROTOBUF
-ZEND_GET_MODULE(iprotobuf)
+#ifdef COMPILE_DL_PROTOBUF
+ZEND_GET_MODULE(protobuf)
 #endif
 
 static int pb_assign_value(zval *this, zval *dst, zval *src, zend_ulong field_number)
